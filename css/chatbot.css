@@ -1,0 +1,20 @@
+
+.chatbot-launcher{position:fixed;right:22px;bottom:22px;z-index:80;border:0;border-radius:999px;background:#708de9;color:#fff;padding:14px 18px;font-weight:700;box-shadow:0 8px 24px #0002;cursor:pointer}
+.chatbot-window{position:fixed;right:22px;bottom:84px;width:min(360px,calc(100vw - 28px));height:460px;max-height:70vh;background:#fff;border:1px solid #e5def2;border-radius:18px;box-shadow:0 16px 50px #21143a30;z-index:80;display:none;overflow:hidden;flex-direction:column}
+.chatbot-window.abierto{display:flex}
+.chatbot-head{background:#a38cda;color:white;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.chatbot-head button{background:transparent;border:0;color:white;font-size:22px;cursor:pointer}
+.chatbot-messages{padding:14px;display:flex;flex:1;flex-direction:column;gap:10px;overflow:auto;background:#fbf9ff}
+.chat-msg{max-width:88%;padding:10px 12px;border-radius:14px;font-size:14px;line-height:1.4;white-space:pre-wrap}
+.chat-msg.bot{background:#eee8fa;align-self:flex-start;color:#2d2340}
+.chat-msg.user{background:#a68ae7;color:white;align-self:flex-end}
+.chatbot-form{display:flex;gap:8px;padding:10px;border-top:1px solid #eee}
+.chatbot-form input{min-width:0;flex:1;border:1px solid #ddd3ee;border-radius:999px;padding:11px}
+.chatbot-form button{border:0;border-radius:999px;background:#8d6ed6;color:#fff;padding:0 15px;cursor:pointer}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-top:24px}
+.products-grid .producto{border-radius:16px;overflow:hidden;background:#fff;border:1px solid #e8e1f2;box-shadow:0 5px 18px #2213440b}
+.products-grid .producto img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#faf8ff;padding:12px}
+.products-grid .producto-info{padding:15px;display:flex;flex-direction:column;gap:8px}
+.products-grid .producto-pie{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.products-grid .btn-agregar{border:0;border-radius:999px;background:#aa95db;color:#fff;padding:9px 12px;cursor:pointer}
+@media(max-width:480px){.chatbot-launcher{right:14px;bottom:14px}.chatbot-window{right:14px;bottom:76px}}

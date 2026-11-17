@@ -1,0 +1,165 @@
+/* Variables globales heredadas del proyecto Huellas con Amor */
+:root {
+    --primary: #887DC4;
+    --primary-dark: #887DC4;
+    --secondary: #f39c12;
+    --light-bg: #fef9f0;
+    --dark: #2c3e50;
+    --text: #4a3728;
+    --white: #ffffff;
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+    --radius: 16px;
+    --transition: 0.3s ease;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Estilos específicos de la página de login */
+body.login-page {
+    background: linear-gradient(135deg, #fef0e0 0%, #fde8d0 100%);
+    font-family: var(--font);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(230, 126, 34, 0.1);
+}
+
+/* Logo del proyecto */
+.login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+}
+
+.login-logo i { color: var(--primary); }
+.login-logo span { color: var(--dark); }
+
+.login-card h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.login-card p {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text);
+    opacity: 0.8;
+    margin-bottom: 30px;
+}
+
+/* Inputs y Labels */
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 0px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text);
+    background-color: var(--light-bg);
+    transition: var(--transition);
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    background-color: var(--white);
+    box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1);
+}
+
+/* Opciones del formulario */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+    accent-color: var(--primary);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Botón principal */
+.btn-login {
+    width: 100%;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 14px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.35);
+}
+
+.btn-login:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(230, 126, 34, 0.45);
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+    .login-card { padding: 30px 20px; }
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

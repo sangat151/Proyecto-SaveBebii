@@ -1,0 +1,14 @@
+<!-- Catálogo: presenta los productos que se pueden añadir al carrito. -->
+<section class="products" id="products">
+  <div class="container">
+    <h2 class="section-title">Nuestros <span>productos</span></h2>
+    <div class="tienda-header-inner">
+      <input class="tienda-search" id="buscador" type="search" placeholder="Buscar productos..." aria-label="Buscar productos">
+      <button class="btn-carrito" type="button" onclick="Carrito.abrir()">
+        🛒 <span>Carrito</span><span class="carrito-badge" id="badge">0</span>
+      </button>
+    </div>
+    <nav class="catalogo-categorias" id="catalogo-categorias" aria-label="Categorías del catálogo"></nav>
+    <div class="catalogo-secciones" id="grid" aria-live="polite"></div>
+  </div>
+</section>

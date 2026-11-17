@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración | SaveBebi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+  <header class="admin-topbar"><a href="index.html" class="admin-brand"><span>🐾</span> SaveBebi <small>ADMIN</small></a><a href="index.html" class="back-site">Volver a la tienda</a></header>
+  <main class="admin-main">
+    <section class="admin-login-card" id="adminLoginCard">
+      <div class="admin-mark">🐾</div><p class="eyebrow">Acceso privado</p><h1>Panel de administración</h1><p>Ingresa con la contraseña privada de SaveBebi.</p>
+      <form id="adminLoginForm"><label for="adminPassword">Contraseña de administradora</label><input id="adminPassword" type="password" autocomplete="current-password" required><button type="submit">Entrar al panel <i class="fas fa-arrow-right"></i></button><p id="adminLoginMessage" role="status"></p></form>
+    </section>
+    <section id="adminDashboard" hidden>
+      <div class="dashboard-heading"><div><p class="eyebrow">Centro de control</p><h1>¡Hola, administradora!</h1><p>Desde aquí puedes revisar aportes y actualizar el impacto confirmado.</p></div><button id="adminLogout" class="logout-button">Cerrar sesión</button></div>
+      <div class="admin-stat-grid"><article><span>🐶</span><strong id="adminDogs">0</strong><small>Perritos ayudados</small></article><article><span>♻️</span><strong id="adminCaps">0</strong><small>Tapitas recolectadas</small></article><article><span>💚</span><strong id="adminDonations">0</strong><small>Aportes registrados</small></article></div>
+      <section class="admin-panel">
+  <h2>Agregar nuevo producto</h2>
+
+  <p id="productMessage" aria-live="polite"></p>
+
+  <form id="productForm"> 
+     <label for="productName">Nombre del producto</label>
+     <input type="text" id="productName" required>
+     <label for="productPrice">Precio del producto</label>
+     <input type="number" id="productPrice" min="1" required>
+     <label for="productDescription">Descripción</label>
+     <textarea id="productDescription"></textarea>
+     <label for="productCategory">Categoría</label>
+
+<select id="productCategory" required>
+  <option value="">Selecciona una categoría</option>
+  <option value="Ropa">Ropa</option>
+  <option value="Camas">Camas</option>
+  <option value="Correas">Correas</option>
+  <option value="Collares">Collares</option>
+
+  <label for="productImage">Imagen del producto</label>
+<input type="file" id="productImage" accept="image/*" required>
+<button type="submit">Agregar producto</button>
+
+</select>
+</form>
+</section>
+      <div class="admin-panels">
+        <section class="admin-panel"><div class="panel-heading"><div><h2>Actualizar impacto</h2><p>Solo registra resultados que ya hayas comprobado.</p></div><span>📊</span></div>
+          <form id="impactForm" class="impact-form"><label for="dogsHelped">Perritos ayudados</label><input id="dogsHelped" type="number" min="0" step="1" required><label for="capsCollected">Tapitas recolectadas</label><input id="capsCollected" type="number" min="0" step="1" required><button type="submit">Guardar cifras verificadas</button><p id="impactMessage" role="status"></p></form>
+        </section>
+        <section class="admin-panel donation-admin-panel"><div class="panel-heading"><div><h2>Aportes de la comunidad</h2><p>Marca cada aporte según su recepción y verificación.</p></div><span>🐾</span></div><div class="table-wrap"><table><thead><tr><th>Persona</th><th>Aporte</th><th>Detalle</th><th>Estado</th></tr></thead><tbody id="adminDonationRows"><tr><td colspan="4">Cargando...</td></tr></tbody></table></div></section>
+      </div>
+      <p class="admin-security-note"><i class="fas fa-lock"></i> El panel usa una contraseña configurada en el servidor. En modo demostración, los cambios se pierden al reiniciar el servidor.</p>
+    </section>
+  </main>
+  <script src="js/admin.js"></script>
+</body>
+</html>

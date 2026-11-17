@@ -1,0 +1,15 @@
+<!-- Panel del carrito: este fragmento se inserta dentro de index.html -->
+<div class="carrito-overlay" id="overlay" onclick="Carrito.cerrar()" aria-hidden="true"></div>
+<aside class="carrito-panel" id="panel" aria-label="Carrito de compras" aria-modal="true" role="dialog">
+  <div class="carrito-head">
+    <div><strong>🛒 Tu carrito</strong><div class="conteo" id="conteo">0 artículos</div></div>
+    <button class="carrito-cerrar" type="button" onclick="Carrito.cerrar()" aria-label="Cerrar carrito">&times;</button>
+  </div>
+  <div class="carrito-items" id="items"></div>
+  <div class="carrito-pie" id="pie">
+    <div class="fila-total"><span class="label">Subtotal</span><strong class="valor" id="total">$0</strong></div>
+    <p class="nota">El envío se confirma al coordinar el pedido.</p>
+    <button class="btn-pagar" type="button" onclick="Carrito.finalizar()">Finalizar por WhatsApp</button>
+    <button class="btn-vaciar" type="button" onclick="Carrito.vaciar()">Vaciar carrito</button>
+  </div>
+</aside>
