@@ -20,6 +20,7 @@ function Impact() {
         }
 
         const datos = await respuesta.json()
+        console.log('Aportes recibidos:', datos.donations)
 
         setPerritosAyudados(datos.dogsHelped || 0)
         setTapitasRecolectadas(datos.capsCollected || 0)
@@ -33,8 +34,6 @@ function Impact() {
 
   // Consultar los aportes cuando se abre el seguimiento.
   useEffect(() => {
-    if (!seguimientoAbierto) return
-
     async function cargarAportes() {
       setCargandoAportes(true)
       setError('')
@@ -47,7 +46,9 @@ function Impact() {
         }
 
         const datos = await respuesta.json()
-        setAportes(datos.donations || [])
+console.log('Datos completos:', datos)
+setAportes(datos.donations || [])
+console.log('Cantidad de aportes:', datos.donations?.length)
       } catch (error) {
         console.error('Error al cargar aportes:', error)
         setError('No fue posible cargar el seguimiento.')
@@ -57,7 +58,7 @@ function Impact() {
     }
 
     cargarAportes()
-  }, [seguimientoAbierto])
+  }, [])
 
   // Formatear la fecha de cada aporte.
   const formatoFecha = fecha => {
@@ -198,7 +199,7 @@ function Impact() {
             </p>
 
             <div className="tracking-summary">
-              <strong id="trackingTotal">
+            <strong id="trackingTotal">
                 {aportes.length}
               </strong>
               <span>aportes registrados</span>

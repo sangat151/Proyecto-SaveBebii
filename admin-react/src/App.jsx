@@ -7,6 +7,10 @@ import Products from './components/products'
 import Cart from './components/cart'
 import Hero from './components/hero'
 import Impact from './components/impact'
+import Donation from './components/donation'
+import Features from './components/features'
+import Nosotros from './components/Nosotros'
+import Tapitas from './components/Tapitas'
 
 function App() {
   const [pantalla, setPantalla] = useState('inicio')
@@ -116,7 +120,12 @@ function App() {
       <Header onLogin={() => setPantalla('login')} />
 
       <main>
+
        <Hero />
+
+       <Features />
+
+       <Nosotros />
 
         <Products
           onAdd={agregarProducto}
@@ -127,7 +136,11 @@ function App() {
           )}
         />
 
+        <Tapitas />
+
         <Impact />
+
+        <Donation />
 
       </main>
 
