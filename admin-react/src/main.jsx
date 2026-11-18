@@ -6,6 +6,8 @@ import '../../css/base.css'
 import '../../css/sections.css'
 import '../../css/responsive.css'
 import '../../css/carrito.css'
+import '../../css/chatbot.css'
+
 
 // Estilos propios de React
 import './index.css'

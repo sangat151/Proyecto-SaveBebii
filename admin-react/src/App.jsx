@@ -11,9 +11,14 @@ import Donation from './components/donation'
 import Features from './components/features'
 import Nosotros from './components/Nosotros'
 import Tapitas from './components/Tapitas'
+import Chatbot from './components/Chatbot'
+import Footer from './components/Footer'
+import Admin from './components/Admin'
 
 function App() {
   const [pantalla, setPantalla] = useState('inicio')
+    // Muestra el panel administrativo cuando se visita /admin.
+ 
   const [carrito, setCarrito] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('savebebi_carrito')) || []
@@ -111,6 +116,11 @@ function App() {
     )
   }
 
+  // Muestra el panel administrativo cuando se visita /admin.
+if (window.location.pathname === '/admin') {
+  return <Admin />
+}
+
   if (pantalla === 'login') {
     return <Login />
   }
@@ -144,6 +154,8 @@ function App() {
 
       </main>
 
+      <Footer />
+
       <Cart
         abierto={carritoAbierto}
         items={carrito}
@@ -153,6 +165,10 @@ function App() {
         onClear={vaciarCarrito}
         onCheckout={finalizarPedido}
       />
+    
+
+      <Chatbot />
+
     </>
   )
 }
