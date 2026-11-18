@@ -16,6 +16,9 @@ function Admin() {
   const [perritos, setPerritos] = useState(0)
   const [tapitas, setTapitas] = useState(0)
   const [aportes, setAportes] = useState([])
+  const [productos, setProductos] = useState([])
+const [cargandoProductos, setCargandoProductos] = useState(false)
+const [productoEditar, setProductoEditar] = useState(null)
   const [cargandoDatos, setCargandoDatos] = useState(false)
 
   // Comprueba si ya existe una sesión guardada.

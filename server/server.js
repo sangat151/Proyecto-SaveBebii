@@ -78,6 +78,114 @@ app.get("/api/products", async (_req, res) => {
   }
 });
 
+// Consulta todos los productos para administrarlos.
+app.get("/api/admin/products", requireAdmin, async (_req, res) => {
+  try {
+    const products = databaseReady()
+      ? await Product.find().sort({ createdAt: -1 }).lean()
+      : PRODUCTS;
+
+    res.json({ products });
+  } catch (error) {
+    console.error("Error consultando productos:", error);
+    res.status(500).json({
+      error: "No se pudieron consultar los productos."
+    });
+  }
+});
+
+// Actualiza los datos de un producto.
+app.put("/api/admin/products/:id", requireAdmin, upload.single('image'), async (req, res) => {
+  try {
+    const { name, description, price, category } = req.body;
+
+    if (!name?.trim() || !price || !category) {
+      return res.status(400).json({
+        error: "Completa los campos obligatorios."
+      });
+    }
+
+    if (!Number.isFinite(Number(price)) || Number(price) <= 0) {
+      return res.status(400).json({
+        error: "El precio debe ser mayor que cero."
+      });
+    }
+
+    const cambios = {
+      name: name.trim(),
+      description: description || '',
+      price: Number(price),
+      category
+    };
+
+    // Si seleccionas una imagen nueva, también la actualiza.
+    if (req.file) {
+      cambios.image = `public/images/products/${req.file.filename}`;
+    }
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      cambios,
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      return res.status(404).json({
+        error: "Producto no encontrado."
+      });
+    }
+
+    res.json({
+      message: "Producto actualizado correctamente.",
+      product
+    });
+
+  } catch (error) {
+    console.error("Error actualizando producto:", error);
+    res.status(500).json({
+      error: "No se pudo actualizar el producto."
+    });
+  }
+
+  // Elimina un producto del inventario.
+app.delete("/api/admin/products/:id", requireAdmin, async (req, res) => {
+  try {
+    if (databaseReady()) {
+      const productoEliminado = await Product.findByIdAndDelete(req.params.id);
+
+      if (!productoEliminado) {
+        return res.status(404).json({
+          error: "Producto no encontrado."
+        });
+      }
+    } else {
+      const indice = PRODUCTS.findIndex(
+        producto => String(producto._id) === req.params.id
+      );
+
+      if (indice === -1) {
+        return res.status(404).json({
+          error: "Producto no encontrado."
+        });
+      }
+
+      PRODUCTS.splice(indice, 1);
+    }
+
+    res.json({
+      message: "Producto eliminado correctamente."
+    });
+
+  } catch (error) {
+    console.error("Error eliminando producto:", error);
+
+    res.status(500).json({
+      error: "No se pudo eliminar el producto."
+    });
+  }
+});
+});
+
   app.post("/api/admin/products", requireAdmin, upload.single('image'), async (req, res) => { 
     const { name, description, price, category } = req.body;
     const image = req.file ? `public/images/products/${req.file.filename}` : '';

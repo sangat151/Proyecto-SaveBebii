@@ -28,6 +28,11 @@ function App() {
   })
 
   const [carritoAbierto, setCarritoAbierto] = useState(false)
+  // Hace que la página siempre comience desde arriba al recargar.
+   useEffect(() => {
+  window.history.scrollRestoration = 'manual'
+  window.scrollTo(0, 0)
+}, [])
 
   // Guarda el carrito cuando cambia su contenido.
   useEffect(() => {
