@@ -1,8 +1,7 @@
 
 import { useState, useEffect } from 'react'
 
-function Header() {
-
+function Header({ onLogin }) {
   // Controla si el menú móvil está abierto o cerrado.
   const [menuAbierto, setMenuAbierto] = useState(false)
 
@@ -79,14 +78,17 @@ function Header() {
             Donar
           </a>
 
-          <a
-            href="/components/sections/Login/login.html"
-            className="login-btn"
-            onClick={cerrarMenu}
-          >
-            <i className="fas fa-sign-in-alt"></i>{' '}
-            Iniciar sesión
-          </a>
+        <button
+  type="button"
+  className="login-btn"
+  onClick={() => {
+    cerrarMenu()
+    onLogin()
+  }}
+>
+  <i className="fas fa-sign-in-alt"></i>{' '}
+  Iniciar sesión
+</button>
 
         </nav>
 
