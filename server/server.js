@@ -35,6 +35,8 @@ const Product = require("./models/Product");
 const Order = require("./models/Order");
 const Donation = require("./models/Donation");
 const Impact = require("./models/Impact");
+const User = require("./models/User");
+const bcrypt = require("bcrypt");
 const { randomUUID, timingSafeEqual } = require("crypto");
 
 // Express crea el servidor HTTP que entrega la web y recibe las peticiones de la API.
