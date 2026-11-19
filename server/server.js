@@ -41,10 +41,12 @@ const { randomUUID, timingSafeEqual } = require("crypto");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = path.join(__dirname, "..");
+const REACT_DIST = path.join(ROOT, "admin-react", "dist");
 // Permite leer cuerpos JSON y limita su tamaño para reducir solicitudes excesivas.
 app.use(express.json({ limit: "20kb" }));
 // Publica HTML, CSS, JavaScript e imágenes desde la carpeta principal del proyecto.
-app.use(express.static(ROOT));
+app.use("/public", express.static(path.join(ROOT, "public")));
+app.use(express.static(REACT_DIST));
 
 const PRODUCTS = [
   { _id: "1", name: "Ropa para perro", description: "Prendas cómodas para consentir a tu compañero.", price: 29900, category: "Ropa", image: "public/images/ropa.png" },
@@ -389,6 +391,19 @@ async function start() {
   } else {
     console.log("MONGODB_URI no configurada: iniciando en modo demostración.");
   }
-  app.listen(PORT, () => console.log(`SaveBebi listo en http://localhost:${PORT}`));
+ 
+    app.listen(PORT, () => console.log(`SaveBebi listo en http://localhost:${PORT}`));
 }
+
+// Permite que React funcione en las rutas de la página.
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api/")) {
+    return res.status(404).json({ mensaje: "Ruta no encontrada" });
+  }
+
+  res.sendFile(path.join(REACT_DIST, "index.html"));
+});
+
 start();
+
+
