@@ -26,6 +26,7 @@ const [productoEditar, setProductoEditar] = useState(null)
   if (token) {
     setSesionActiva(true)
     cargarDashboard(token)
+    cargarProductos()
   }
 }, [])
 
@@ -54,7 +55,8 @@ const [productoEditar, setProductoEditar] = useState(null)
       setToken(datos.token)
       sessionStorage.setItem('savebebi_admin_token', datos.token)
       setSesionActiva(true)
-      await cargarDashboard(datos.token)    
+      await cargarDashboard(datos.token) 
+      await cargarProductos()   
         setMensaje('')
       setPassword('')
     } catch (err) {
@@ -67,8 +69,10 @@ const [productoEditar, setProductoEditar] = useState(null)
 
 
   // Prepara las solicitudes que necesitan autorización.
-   async function api(url, opciones = {}, tokenActual = token) {    const respuesta = await fetch(url, {
-      ...opciones,
+   async function api(url, opciones = {}, tokenActual = token) 
+   {    const respuesta = await fetch(url, {
+      ...opciones,   
+      cache: 'no-store', 
       headers: {
         ...(opciones.body instanceof FormData
           ? {}
@@ -104,6 +108,25 @@ const [productoEditar, setProductoEditar] = useState(null)
     }
   }
 
+// Consulta todos los productos del inventario.
+async function cargarProductos(tokenNuevo = token) {
+  try {
+    setCargandoProductos(true)
+
+    const datos = await api(
+      '/api/admin/products',
+      {},
+      tokenNuevo
+    )
+
+    setProductos(datos.products || [])
+  } catch (err) {
+    setMensaje(err.message)
+    setError(true)
+  } finally {
+    setCargandoProductos(false)
+  }
+}
   // Cierra la sesión de administración.
 async function cerrarSesion() {
   try {
@@ -338,6 +361,44 @@ async function cerrarSesion() {
 </section>
 
     {cargandoDatos && <p>Cargando estadísticas...</p>}
+
+<section className="admin-panel">
+  <div className="panel-heading">
+    <div>
+      <h2>Inventario de productos</h2>
+      <p>Administra los productos disponibles en SaveBebi.</p>
+    </div>
+  </div>
+
+  {cargandoProductos ? (
+    <p>Cargando productos...</p>
+  ) : productos.length > 0 ? (
+    <div className="admin-products-list">
+      {productos.map((producto) => (
+        <article key={producto._id} className="admin-product-item">
+          <img
+            src={`/${producto.image}`}
+            alt={producto.name}
+          />
+
+          <div>
+            <h3>{producto.name}</h3>
+            <p>{producto.category}</p>
+            <strong>
+              {Number(producto.price).toLocaleString('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                maximumFractionDigits: 0
+              })}
+            </strong>
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <p>No hay productos registrados.</p>
+  )}
+</section>
 
 <section className="admin-panel">
   <h2>Agregar nuevo producto</h2>
