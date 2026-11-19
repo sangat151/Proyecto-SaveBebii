@@ -119,21 +119,7 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
         {/* Categorías y productos */}
         {!cargando && !error && productosFiltrados.length > 0 && (
           <>
-            <nav
-              className="catalogo-categorias"
-              aria-label="Categorías del catálogo"
-            >
-              {categorias.map(categoria => (
-                <a
-                  key={categoria}
-                  className="categoria-enlace"
-                  href={`#categoria-${categoria.toLocaleLowerCase('es')}`}
-                >
-                  {categoria}
-                </a>
-              ))}
-            </nav>
-
+            
             <div className="catalogo-secciones">
 
               {categorias.map(categoria => {
