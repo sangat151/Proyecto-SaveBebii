@@ -13,7 +13,6 @@
     --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* Estilos específicos de la página de login */
 body.login-page {
     background: linear-gradient(135deg, #fef0e0 0%, #fde8d0 100%);
     font-family: var(--font);
@@ -25,6 +24,34 @@ body.login-page {
     margin: 0;
     padding: 20px;
 }
+
+body.login-page {
+  min-height: 100vh;
+}
+
+body.login-page main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+.login-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
 
 .login-wrapper {
     width: 100%;
