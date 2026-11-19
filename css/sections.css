@@ -507,11 +507,18 @@ font-weight: 700;
      margin: 10px 0 18px;
      }
 
-.product-card .btn-seconary {
+.product-card .btn-secondary {
    font-size: 0.85rem; 
-   padding: 10px 24px;
+   padding: 10px 10px;
    }
 
+.btn-agregar-carrito {
+  padding: 9px 14px !important;
+  font-size: 0.82rem !important;
+  border-radius: 10px;
+  width: auto;
+  min-height: 38px;
+}
 
 .impact {
      padding: 70px 0;

@@ -172,7 +172,7 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
                               </span>
 
                               <button
-                                className="btn-primary"
+                              className="btn-primary btn-agregar-carrito"
                                 type="button"
                                 onClick={() => onAdd(producto)}
                               >
