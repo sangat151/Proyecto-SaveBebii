@@ -189,6 +189,15 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 30px;
+}
+
 .hero-content {
     flex: 1;
     margin: 0;
@@ -255,7 +264,12 @@ font-weight: 700;
     margin-bottom:0!important;
     color:#06010c!important; }
 .hero-image-glow {
-     position:absolute;aspect-ratio:1;border-radius:50%;background:linear-gradient(140deg,#4da6e0,#d310ec);box-shadow:inset 0 0 0 14px #ffffff65; }
+     position:absolute;
+     aspect-ratio:1;
+     border-radius:50%;
+     background:linear-gradient(140deg,#4da6e0,#d310ec);
+     box-shadow:inset 0 0 0 14px #ffffff65;
+     }
 .hero-dog-wrap { 
   position: relative;
   z-index: 1;
@@ -265,8 +279,6 @@ font-weight: 700;
   align-items: center;
   max-width: 90%;
 }
-
-
 .hero-dog { 
   width: 100%; 
   max-height: none !important;
