@@ -146,7 +146,7 @@ app.put("/api/admin/products/:id", requireAdmin, upload.single('image'), async (
       error: "No se pudo actualizar el producto."
     });
   }
-
+});
   // Elimina un producto del inventario.
 app.delete("/api/admin/products/:id", requireAdmin, async (req, res) => {
   try {
@@ -184,7 +184,7 @@ app.delete("/api/admin/products/:id", requireAdmin, async (req, res) => {
     });
   }
 });
-});
+
 
   app.post("/api/admin/products", requireAdmin, upload.single('image'), async (req, res) => { 
     const { name, description, price, category } = req.body;

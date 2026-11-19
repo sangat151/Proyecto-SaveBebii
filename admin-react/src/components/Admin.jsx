@@ -391,6 +391,50 @@ async function cerrarSesion() {
                 maximumFractionDigits: 0
               })}
             </strong>
+
+            <div className="admin-product-actions">
+       <button
+  type="button"
+  onClick={() => {
+    setProductoEditar(producto)
+
+    document.getElementById('productName')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+  }}
+>
+  Editar
+</button>
+
+  <button
+    type="button"
+    onClick={async () => {
+      const confirmar = window.confirm(
+        `¿Deseas eliminar "${producto.name}"?`
+      )
+
+      if (!confirmar) return
+
+      try {
+        const datos = await api(
+          `/api/admin/products/${producto._id}`,
+          { method: 'DELETE' }
+        )
+
+        setMensaje(datos.message)
+        setError(false)
+        await cargarProductos()
+      } catch (err) {
+        setMensaje(err.message)
+        setError(true)
+      }
+    }}
+  >
+    Eliminar
+  </button>
+</div>
+
           </div>
         </article>
       ))}
@@ -401,10 +445,14 @@ async function cerrarSesion() {
 </section>
 
 <section className="admin-panel">
-  <h2>Agregar nuevo producto</h2>
-
-  <form
-    onSubmit={async (event) => {
+<h2>
+  {productoEditar ? 'Editar producto' : 'Agregar nuevo producto'}
+</h2>
+ <form
+  className="admin-product-form"
+    key={productoEditar?._id || 'nuevo'}
+    
+  onSubmit={async (event) => {
       event.preventDefault()
 
       const formulario = event.currentTarget
@@ -414,7 +462,11 @@ async function cerrarSesion() {
       const precio = Number(datosFormulario.get('price'))
       const imagen = datosFormulario.get('image')
 
-      if (!nombre || !precio || !imagen || !imagen.size) {
+    if (
+  !nombre ||
+  !precio ||
+  (!productoEditar && (!imagen || !imagen.size))
+) {
         setMensaje('Completa los campos obligatorios.')
         setError(true)
         return
@@ -427,14 +479,21 @@ async function cerrarSesion() {
       }
 
       try {
-        const datos = await api('/api/admin/products', {
-          method: 'POST',
-          body: datosFormulario
-        })
+       const datos = await api(
+  productoEditar
+    ? `/api/admin/products/${productoEditar._id}`
+    : '/api/admin/products',
+  {
+    method: productoEditar ? 'PUT' : 'POST',
+    body: datosFormulario
+  }
+)
 
-        setMensaje(datos.message || 'Producto agregado correctamente.')
-        setError(false)
-        formulario.reset()
+      setMensaje(datos.message || 'Producto guardado correctamente.')
+      setError(false)
+      formulario.reset()
+      setProductoEditar(null)
+      await cargarProductos()
       } catch (err) {
         setMensaje(err.message)
         setError(true)
@@ -442,17 +501,37 @@ async function cerrarSesion() {
     }}
   >
     <label htmlFor="productName">Nombre del producto</label>
-    <input id="productName" name="name" type="text" required />
-
+     <input
+      id="productName"
+      name="name"
+      type="text"
+      defaultValue={productoEditar?.name || ''}
+      required
+    />
     <label htmlFor="productPrice">Precio del producto</label>
-    <input id="productPrice" name="price" type="number" min="1" required />
-
+     <input
+  id="productPrice"
+  name="price"
+  type="number"
+  min="1"
+  defaultValue={productoEditar?.price || ''}
+  required
+/>
     <label htmlFor="productDescription">Descripción</label>
-    <textarea id="productDescription" name="description" />
+    <textarea
+  id="productDescription"
+  name="description"
+  defaultValue={productoEditar?.description || ''}
+/>
 
     <label htmlFor="productCategory">Categoría</label>
-    <select id="productCategory" name="category" required>
-      <option value="">Selecciona una categoría</option>
+    <select
+  id="productCategory"
+  name="category"
+  defaultValue={productoEditar?.category || ''}
+  required
+    >   
+   <option value="">Selecciona una categoría</option>
       <option value="Ropa">Ropa</option>
       <option value="Camas">Camas</option>
       <option value="Correas">Correas</option>
@@ -465,7 +544,7 @@ async function cerrarSesion() {
       name="image"
       type="file"
       accept="image/*"
-      required
+      required={!productoEditar}
     />
 
     <button type="submit">Agregar producto</button>

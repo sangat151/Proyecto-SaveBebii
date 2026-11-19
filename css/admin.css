@@ -51,3 +51,142 @@
 .admin-product-item strong {
   font-size: 14px;
 }
+
+
+/* FORMULARIO DE PRODUCTOS */
+.admin-product-form {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px 20px;
+  margin-top: 22px;
+}
+
+/* Título del formulario */
+.admin-panel h2 {
+  color: #593b70;
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+/* Etiquetas */
+.admin-product-form label {
+  color: #55465f;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Campos de texto */
+.admin-product-form input:not([type="file"]),
+.admin-product-form textarea,
+.admin-product-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #dfd1eb;
+  border-radius: 10px;
+  background: #fff;
+  color: #45364f;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto al seleccionar un campo */
+.admin-product-form input:focus,
+.admin-product-form textarea:focus,
+.admin-product-form select:focus {
+  border-color: #a879c5;
+  box-shadow: 0 0 0 3px rgba(168, 121, 197, 0.15);
+}
+
+/* Descripción */
+.admin-product-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Selector de imagen */
+.admin-product-form input[type="file"] {
+  width: 100%;
+  color: #65566e;
+  font-size: 13px;
+}
+
+/* Botón principal */
+.admin-product-form button[type="submit"] {
+  grid-column: 2;
+  justify-self: start;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: #8055a0;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.admin-product-form button[type="submit"]:hover {
+  background: #684183;
+  transform: translateY(-2px);
+}
+
+/* Mensajes del formulario */
+.admin-product-form [role="status"] {
+  grid-column: 2;
+  margin: 0;
+  font-size: 13px;
+  color: #39845b;
+}
+
+/* Mensajes de error */
+.admin-product-form [role="status"].error {
+  color: #c44747;
+}
+
+
+
+/* Contenedor de los botones del inventario */
+.admin-product-item button {
+  padding: 9px 15px;
+  border: none;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.admin-product-item button:first-of-type {
+  background: #eee3f6;
+  color: #70458d;
+}
+
+.admin-product-item button:first-of-type:hover {
+  background: #d9c2e9;
+  transform: translateY(-2px);
+}
+
+/* Botón eliminar */
+.admin-product-item button:last-of-type {
+  background: #fde9e9;
+  color: #bd4b4b;
+}
+
+.admin-product-item button:last-of-type:hover {
+  background: #f8d0d0;
+  transform: translateY(-2px);
+}
+
+/* Organización de los botones */
+.admin-product-item {
+  flex-wrap: wrap;
+}
+
+.admin-product-item button {
+  margin-top: 5px;
+}
+

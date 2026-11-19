@@ -622,3 +622,23 @@
         gap: 10px;
     }
 }
+
+/* Diseño para celulares */
+@media (max-width: 600px) {
+  .admin-product-form {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .admin-product-form button[type="submit"],
+  .admin-product-form [role="status"] {
+    grid-column: 1;
+  }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 600px) {
+  .admin-product-item button {
+    flex: 1;
+  }
+}
