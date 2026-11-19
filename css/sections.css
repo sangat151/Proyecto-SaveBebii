@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
 * {
   box-sizing: border-box;
 }
@@ -157,7 +159,6 @@ body {
 }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 .hero {
   width: 100%;
   max-width: 100%;
@@ -234,7 +235,7 @@ textarea {
     margin-top: 40px !important;
 }
 .hero {
-  background-image: url('/public/images/fondo-huellitas.png') !important;
+  background-image: url('/images/fondo-huellitas.png');
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
