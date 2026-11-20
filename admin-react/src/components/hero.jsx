@@ -65,8 +65,7 @@ function Hero() {
             <img
               id="heroDog"
               className={`hero-dog ${saludando ? 'dog-wave' : ''}`}
-              src="/Proyecto-SaveBebii/public/images/perro.png"
-              alt="Perrito de SaveBebi listo para saludar"
+              src="/Proyecto-SaveBebii/images/perro.png"              alt="Perrito de SaveBebi listo para saludar"
             />
 
             <button
