@@ -7,7 +7,6 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
 
-  // Orden en el que se muestran las categorías
   const ordenCategorias = [
     'Collares',
     'Correas',
@@ -15,18 +14,16 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
     'Ropa',
     'Camas',
     'Juguetes',
-    'Alimentación',
+    'Alimentos',
     'Accesorios'
   ]
 
-  // Formato de precios en pesos colombianos
   const formato = new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: 'COP',
     maximumFractionDigits: 0
   })
 
-  // Cargar los productos desde el servidor
   useEffect(() => {
     async function cargarProductos() {
       try {
@@ -49,7 +46,6 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
     cargarProductos()
   }, [])
 
-  // Filtrar productos según lo que escriba el usuario
   const texto = busqueda.trim().toLocaleLowerCase('es')
 
   const productosFiltrados = productos.filter(producto =>
@@ -58,7 +54,6 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
       .includes(texto)
   )
 
-  // Mostrar únicamente las categorías que tengan productos
   const categorias = ordenCategorias.filter(categoria =>
     productosFiltrados.some(
       producto => producto.category === categoria
@@ -73,17 +68,33 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
           Nuestros <span>productos</span>
         </h2>
 
-        {/* Buscador y acceso al carrito */}
+        {/* Buscador y carrito */}
         <div className="tienda-header-inner">
 
-          <input
-            className="tienda-search"
-            type="search"
-            placeholder="Buscar productos..."
-            aria-label="Buscar productos"
-            value={busqueda}
-            onChange={event => setBusqueda(event.target.value)}
-          />
+          <div className="tienda-search-wrap">
+            <svg
+              className="tienda-search-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" />
+            </svg>
+
+            <input
+              className="tienda-search"
+              type="search"
+              placeholder="Buscar productos..."
+              aria-label="Buscar productos"
+              value={busqueda}
+              onChange={event => setBusqueda(event.target.value)}
+            />
+          </div>
 
           <button
             className="btn-carrito"
@@ -99,99 +110,92 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
 
         </div>
 
-        {/* Estado de carga */}
         {cargando && (
           <p>Cargando productos...</p>
         )}
 
-        {/* Mensaje de error */}
         {error && (
           <p role="alert">{error}</p>
         )}
 
-        {/* Mensaje cuando no hay resultados */}
         {!cargando && !error && productosFiltrados.length === 0 && (
           <p className="catalogo-sin-resultados">
             No encontramos productos con esa búsqueda.
           </p>
         )}
 
-        {/* Categorías y productos */}
         {!cargando && !error && productosFiltrados.length > 0 && (
-          <>
-            
-            <div className="catalogo-secciones">
+          <div className="catalogo-secciones">
 
-              {categorias.map(categoria => {
-                const productosCategoria = productosFiltrados.filter(
-                  producto => producto.category === categoria
-                )
+            {categorias.map(categoria => {
+              const productosCategoria = productosFiltrados.filter(
+                producto => producto.category === categoria
+              )
 
-                return (
-                  <section
-                    className="catalogo-categoria"
-                    id={`categoria-${categoria.toLocaleLowerCase('es')}`}
-                    key={categoria}
-                  >
-                    <h3 className="catalogo-categoria-titulo">
-                      {categoria}
-                    </h3>
+              return (
+                <section
+                  className="catalogo-categoria"
+                  id={`categoria-${categoria.toLocaleLowerCase('es')}`}
+                  key={categoria}
+                >
+                  <h3 className="catalogo-categoria-titulo">
+                    {categoria}
+                  </h3>
 
-                    <div className="grid-productos">
+                  <div className="grid-productos">
 
-                      {productosCategoria.map(producto => (
-                        <article
-                          className="producto"
-                          key={producto._id}
-                        >
+                    {productosCategoria.map(producto => (
+                      <article
+                        className="producto"
+                        key={producto._id}
+                      >
 
-                          <img
-                            src={producto.image}
-                            alt={producto.name}
-                            loading="lazy"
-                          />
+                        <img
+                          src={producto.image}
+                          alt={producto.name}
+                          loading="lazy"
+                        />
 
-                          <div className="producto-info">
+                        <div className="producto-info">
 
-                            <span className="producto-cat">
-                              {producto.category}
+                          <span className="producto-cat">
+                            {producto.category}
+                          </span>
+
+                          <strong className="producto-nombre">
+                            {producto.name}
+                          </strong>
+
+                          <span className="producto-desc">
+                            {producto.description}
+                          </span>
+
+                          <div className="producto-pie">
+
+                            <span className="producto-precio">
+                              {formato.format(producto.price)}
                             </span>
 
-                            <strong className="producto-nombre">
-                              {producto.name}
-                            </strong>
-
-                            <span className="producto-desc">
-                              {producto.description}
-                            </span>
-
-                            <div className="producto-pie">
-
-                              <span className="producto-precio">
-                                {formato.format(producto.price)}
-                              </span>
-
-                              <button
+                            <button
                               className="btn-primary btn-agregar-carrito"
-                                type="button"
-                                onClick={() => onAdd(producto)}
-                              >
-                                Añadir al carrito
-                              </button>
-
-                            </div>
+                              type="button"
+                              onClick={() => onAdd(producto)}
+                            >
+                              Añadir al carrito
+                            </button>
 
                           </div>
-                        </article>
-                      ))}
 
-                    </div>
-                  </section>
-                )
-              })}
+                        </div>
+                      </article>
+                    ))}
 
-            </div>
-          </>
+                  </div>
+                </section>
+              )
+            })}
+
+          </div>
         )}
 
       </div>

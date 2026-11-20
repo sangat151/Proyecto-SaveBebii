@@ -4,14 +4,13 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react()],
+base: '/Proyecto-SaveBebii/',
   publicDir: '../public',
 
   server: {
     proxy: {
-      // Conexión con el servidor y MongoDB.
+      // Conexión con el servidor local.
       '/api': 'http://localhost:3000',
-
-      // Permite cargar las imágenes originales de SaveBebi.
       '/public': 'http://localhost:3000'
     }
   }

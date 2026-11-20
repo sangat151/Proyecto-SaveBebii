@@ -1,57 +1,107 @@
-# SaveBebi: frontend + backend inicial
+# SaveBebi
 
-## Qué incluye
-- Sitio web modular en HTML, CSS y JavaScript.
-- Carrito de compras del lado del navegador.
-- Chatbot de preguntas frecuentes conectado a `POST /api/chat`.
-- API de productos en `GET /api/products`.
-- Endpoint inicial para validar pedidos en `POST /api/orders`.
-- Modelos de MongoDB para productos y pedidos.
-- Modo demostración si aún no has conectado MongoDB.
+**Una tienda con propósito: collares que alimentan y no solo adornan.**
+
+SaveBebi es un proyecto de emprendimiento digital que busca ofrecer productos para mascotas y contribuir al bienestar de los animales en situación de calle.
+
+## ¿Qué es SaveBebi?
+
+SaveBebi es una plataforma web que combina comercio electrónico con una iniciativa de impacto social.
+
+## Funcionalidades
+
+- Catálogo de productos para mascotas.
+- Categorías para organizar los productos.
+- Carrito de compras.
+- Registro e inicio de sesión de clientes.
+- Asistente virtual Bebi para orientar a los visitantes.
+- Sección de donaciones y aportes.
+- Sección de seguimiento de la iniciativa social.
+- Panel de administración para gestionar productos y revisar información.
+- Diseño adaptable a computadores, tabletas y celulares.
+
+## Tecnologías utilizadas
+
+**Frontend**
+- HTML
+- CSS
+- JavaScript
+- React
+- Vite
+
+**Backend**
+- Node.js
+- Express.js
+- API REST
+
+**Base de datos**
+- MongoDB
+- Mongoose
+
+**Herramientas**
+- Visual Studio Code
+- Git
+- GitHub
+
+## Estructura del proyecto
+
+- `public/`: imágenes y recursos visuales de la página.
+- `server/`: servidor, rutas y conexión con MongoDB.
+- `admin-react/`: aplicación del panel de administración.
+- `css/`: estilos de la página.
+- `js/`: funcionalidades JavaScript del sitio.
 
 ## Requisitos
-Instala Node.js LTS desde https://nodejs.org/. Para MongoDB puedes crear una base gratuita en MongoDB Atlas: https://www.mongodb.com/atlas/database.
 
-## Iniciar en tu computador
-1. Descomprime la carpeta y ábrela en VS Code.
-2. Abre una terminal dentro de la carpeta principal `SaveBebi`.
-3. Ejecuta `npm install`.
-4. (Opcional al comienzo) Copia `.env.example` como `.env` y reemplaza la URI con la de tu base de MongoDB Atlas. Nunca compartas ese archivo ni publiques contraseñas.
-5. Ejecuta `npm run dev` o `npm start`.
-6. Abre `http://localhost:3000` en el navegador. No abras `index.html` con doble clic: el chatbot llama al servidor.
-7. Comprueba el estado visitando `http://localhost:3000/api/health`.
+Para ejecutar el proyecto localmente necesitas:
 
-## Importante
-- El chatbot actual es de preguntas frecuentes, no una IA generativa. Sirve como primera versión sin una clave de API.
-- El modo demostración no guarda pedidos de forma permanente. Para guardarlos, configura `MONGODB_URI`.
-- Los productos de ejemplo y precios deben revisarse y confirmarse antes de publicar.
-- Para que el botón de WhatsApp funcione, agrega tu número de negocio en `WHATSAPP` dentro de `js/carrito.js`, con código de país y sin `+`, espacios ni guiones.
-- Antes de recibir pedidos reales, añade validaciones adicionales, protección contra abuso, política de privacidad y revisión de seguridad.
+- Node.js.
+- MongoDB Atlas o una instancia de MongoDB.
+- Visual Studio Code.
+- Git.
 
-## Mejoras de la versión actual
-- El asistente Bebi intenta consultar `POST /api/chat` y tiene respuestas locales de respaldo si la API no está disponible.
-- El asistente reconoce preguntas sobre tapitas plásticas, reciclaje e iniciativas para niños con cáncer.
-- El hero incluye un saludo animado del perrito y la campaña de tapitas incluye un contador demostrativo guardado solo en el navegador.
-- Los comentarios en español explican la responsabilidad de las secciones y funciones principales para facilitar la exposición del código.
+## Ejecutar el proyecto localmente
 
-## Sobre la IA y la campaña de tapitas
-El asistente actual es un bot de preguntas frecuentes con reglas, no un modelo de IA generativa conectado a un proveedor externo. Responde a preguntas frecuentes sin clave secreta y sigue funcionando en modo local cuando el servidor no está activo. Para integrar una IA generativa real se necesitaría elegir un proveedor, configurar una clave privada en el servidor y revisar costos y privacidad.
+1. Descarga o clona el repositorio.
+2. Abre la carpeta principal `SaveBebi` en Visual Studio Code.
+3. Instala las dependencias necesarias.
+4. Configura las variables de entorno en el archivo `.env`.
+5. Verifica que la conexión con MongoDB esté configurada.
+6. Inicia el servidor desde la carpeta correspondiente.
+7. Abre la dirección local del proyecto en el navegador.
 
-La campaña de tapitas es una propuesta en desarrollo. No se deben anunciar puntos de entrega, fundaciones aliadas, cifras recolectadas ni ayudas realizadas hasta verificarlas. El contador de la página es solo demostrativo y no representa una donación real.
+El servidor utiliza el puerto 3000.
 
-## Donaciones y seguimiento
-- El formulario de `#donacion` registra nombre, tipo de aporte y detalle.
-- `POST /api/donations` guarda el aporte en MongoDB cuando `MONGODB_URI` está conectada.
-- `GET /api/donations` alimenta el botón **Ver seguimiento**.
-- Sin MongoDB, Express usa una lista temporal en memoria (se pierde al reiniciar el servidor). Si abres la web sin servidor, el formulario y seguimiento usan `localStorage` en ese navegador.
-- El tipo “Aporte económico (intención)” solo registra interés: no cobra ni transfiere dinero. El formulario tampoco confirma que un aporte físico haya sido entregado o recibido.
+## Base de datos
 
+SaveBebi utiliza MongoDB para almacenar información del proyecto, como los productos y otros datos gestionados desde el servidor.
 
-## Panel de administración y seguimiento
+La conexión se configura mediante variables de entorno. Nunca publiques el archivo `.env`, contraseñas, tokens ni credenciales de acceso.
 
-- Abre `http://localhost:3000/admin.html` para entrar al panel privado.
-- Configura `ADMIN_PASSWORD` en tu archivo `.env` con una contraseña propia. No publiques ni compartas ese archivo.
-- Desde el panel puedes revisar aportes, cambiar su estado (pendiente, recibido o verificado) y actualizar las cifras públicas de perritos ayudados y tapitas recolectadas.
-- Las cifras públicas empiezan en cero: actualízalas únicamente cuando tengas evidencia de la ayuda o recolección. Las ilustraciones de perritos y caneca son decorativas, no representan resultados reales.
-- Para guardar cambios de forma permanente y compartirlos entre dispositivos, conecta MongoDB con `MONGODB_URI`. Sin MongoDB, los datos del modo demostración se pierden al reiniciar el servidor.
-- El acceso de administración usa una sesión temporal del servidor separada del formulario de clientes. El login de clientes existente no se modifica en esta entrega.
+## Panel de administración
+
+SaveBebi cuenta con un panel privado desde el que se pueden gestionar los productos y consultar información administrativa.
+
+El acceso está protegido y utiliza autenticación mediante el servidor.
+
+## Asistente virtual Bebi
+
+Bebi es el asistente virtual de SaveBebi. Su propósito es orientar a los visitantes y responder preguntas relacionadas con la tienda y el proyecto.
+
+Las funciones disponibles dependen de la configuración del servidor.
+
+## Impacto social
+
+SaveBebi busca apoyar iniciativas relacionadas con los animales en situación de calle y promover acciones solidarias.
+
+Las cifras de impacto y las ayudas realizadas deben actualizarse únicamente cuando estén verificadas.
+
+## Publicación
+
+El proyecto puede publicar su frontend en un servicio de alojamiento web. Sin embargo, el backend de Node.js y la base de datos MongoDB necesitan servicios de alojamiento independientes.
+
+GitHub Pages puede alojar páginas estáticas, pero no ejecuta el servidor ni sustituye la conexión con MongoDB.
+
+## Autora y propósito
+
+SaveBebi nace como un proyecto de emprendimiento digital desarrollado con el propósito de combinar tecnología, creatividad y responsabilidad social.

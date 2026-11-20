@@ -863,3 +863,46 @@ body.tracking-open{overflow:hidden}
   opacity: 0.6;
 }
 
+/* Ajustar tamaño del carrito en celulares */
+@media (max-width: 600px) {
+  .carrito-panel {
+    width: 90% !important;
+    max-width: 360px;
+    height: 88vh !important;
+    max-height: 88vh;
+    top: 6vh;
+    bottom: auto;
+    overflow: hidden;
+  }
+
+  .carrito-items {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .carrito-pie {
+    flex-shrink: 0;
+    padding: 12px 15px !important;
+    gap: 8px;
+  }
+
+  .fila-total {
+    margin-bottom: 0;
+  }
+
+  .carrito-pie .nota {
+    margin: 4px 0;
+    font-size: 12px;
+  }
+
+  .btn-pagar {
+    padding: 10px !important;
+    min-height: 42px;
+  }
+
+  .btn-vaciar {
+    padding: 7px !important;
+  }
+}
+

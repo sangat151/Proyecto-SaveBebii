@@ -56,7 +56,7 @@ const [productoEditar, setProductoEditar] = useState(null)
       sessionStorage.setItem('savebebi_admin_token', datos.token)
       setSesionActiva(true)
       await cargarDashboard(datos.token) 
-      await cargarProductos()   
+      await cargarProductos(datos.token)
         setMensaje('')
       setPassword('')
     } catch (err) {
@@ -451,7 +451,7 @@ async function cerrarSesion() {
  <form
   className="admin-product-form"
     key={productoEditar?._id || 'nuevo'}
-    
+
   onSubmit={async (event) => {
       event.preventDefault()
 
@@ -532,10 +532,14 @@ async function cerrarSesion() {
   required
     >   
    <option value="">Selecciona una categoría</option>
-      <option value="Ropa">Ropa</option>
-      <option value="Camas">Camas</option>
-      <option value="Correas">Correas</option>
-      <option value="Collares">Collares</option>
+<option value="Ropa">Ropa</option>
+<option value="Camas">Camas</option>
+<option value="Correas">Correas</option>
+<option value="Collares">Collares</option>
+<option value="Arneses">Arneses</option>
+<option value="Juguetes">Juguetes</option>
+<option value="Alimentos">Alimentos</option>
+<option value="Accesorios">Accesorios</option>
     </select>
 
     <label htmlFor="productImage">Imagen del producto</label>
