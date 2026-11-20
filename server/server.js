@@ -66,6 +66,29 @@ const upload = multer({
 
 // Permite leer solicitudes JSON.
 app.use(express.json({ limit: "20kb" }));
+// Permite que GitHub Pages se comunique con el backend.
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://sangat151.github.io"
+  );
+
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 // Publica las imágenes y archivos públicos de SaveBebi.
 app.use("/public", express.static(path.join(ROOT, "public")));

@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from 'react'
 
+const API_URL = 'https://savebebi-backend.onrender.com'
+
 function Products({ onAdd, onOpenCart, cantidadCarrito }) {
   const [productos, setProductos] = useState([])
   const [busqueda, setBusqueda] = useState('')
@@ -24,10 +26,26 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
     maximumFractionDigits: 0
   })
 
+  // Convierte la ruta de cada imagen en una dirección de Render.
+  const obtenerImagen = (imagen) => {
+    if (!imagen) return ''
+
+    if (imagen.startsWith('http')) {
+      return imagen
+    }
+
+    if (imagen.startsWith('/')) {
+      return `${API_URL}${imagen}`
+    }
+
+    return `${API_URL}/${imagen}`
+  }
+
+  // Consulta los productos directamente al backend de Render.
   useEffect(() => {
     async function cargarProductos() {
       try {
-        const respuesta = await fetch('/api/products')
+        const respuesta = await fetch(`${API_URL}/api/products`)
 
         if (!respuesta.ok) {
           throw new Error('No se pudieron cargar los productos.')
@@ -151,7 +169,7 @@ function Products({ onAdd, onOpenCart, cantidadCarrito }) {
                       >
 
                         <img
-                          src={producto.image}
+                          src={obtenerImagen(producto.image)}
                           alt={producto.name}
                           loading="lazy"
                         />
