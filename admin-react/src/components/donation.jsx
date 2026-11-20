@@ -1,6 +1,8 @@
 
 import { useState } from 'react'
 
+const API_URL = 'https://savebebi-backend.onrender.com'
+
 function Donation() {
   const [mensaje, setMensaje] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -22,7 +24,7 @@ function Donation() {
       setEnviando(true)
       setMensaje('Registrando tu aporte...')
 
-      const respuesta = await fetch('/api/donations', {
+      const respuesta = await fetch(`${API_URL}/api/donations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

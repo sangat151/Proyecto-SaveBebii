@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react'
 
+const API_URL = 'https://savebebi-backend.onrender.com'
+
 function Impact() {
   const [perritosAyudados, setPerritosAyudados] = useState(0)
   const [tapitasRecolectadas, setTapitasRecolectadas] = useState(0)
@@ -13,7 +15,7 @@ function Impact() {
   useEffect(() => {
     async function cargarImpacto() {
       try {
-        const respuesta = await fetch('/api/impact')
+        const respuesta = await fetch(`${API_URL}/api/impact`)
 
         if (!respuesta.ok) {
           throw new Error('No se pudo consultar el impacto.')
@@ -39,16 +41,17 @@ function Impact() {
       setError('')
 
       try {
-        const respuesta = await fetch('/api/donations')
+        const respuesta = await fetch(`${API_URL}/api/donations`)
 
         if (!respuesta.ok) {
           throw new Error('No se pudieron consultar los aportes.')
         }
 
         const datos = await respuesta.json()
-console.log('Datos completos:', datos)
-setAportes(datos.donations || [])
-console.log('Cantidad de aportes:', datos.donations?.length)
+        console.log('Datos completos:', datos)
+
+        setAportes(datos.donations || [])
+        console.log('Cantidad de aportes:', datos.donations?.length)
       } catch (error) {
         console.error('Error al cargar aportes:', error)
         setError('No fue posible cargar el seguimiento.')
@@ -163,7 +166,8 @@ console.log('Cantidad de aportes:', datos.donations?.length)
 
       {seguimientoAbierto && (
         <div
-        className={`tracking-modal ${seguimientoAbierto ? 'is-open' : ''}`}          id="trackingModal"
+          className={`tracking-modal ${seguimientoAbierto ? 'is-open' : ''}`}
+          id="trackingModal"
           aria-hidden="false"
         >
           <div
@@ -199,7 +203,7 @@ console.log('Cantidad de aportes:', datos.donations?.length)
             </p>
 
             <div className="tracking-summary">
-            <strong id="trackingTotal">
+              <strong id="trackingTotal">
                 {aportes.length}
               </strong>
               <span>aportes registrados</span>
@@ -227,7 +231,7 @@ console.log('Cantidad de aportes:', datos.donations?.length)
               )}
 
               {!cargandoAportes && aportes.map(aporte => (
-                <article className="tracking-item" key={aporte.id}>
+                <article className="tracking-item" key={aporte.id || aporte._id}>
 
                   <strong>{aporte.name}</strong>
 

@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import '../../../css/login.css'
 
+const API_URL = 'https://savebebi-backend.onrender.com'
+
 function Login() {
   // Controla si se muestra el inicio de sesión o el registro.
   const [modo, setModo] = useState('login')
@@ -24,94 +26,100 @@ function Login() {
   }
 
   // Procesa el envío del formulario.
- 
+  const manejarEnvio = async (event) => {
+    event.preventDefault()
 
-const manejarEnvio = async (event) => {
-  event.preventDefault();
+    const formulario = event.currentTarget
+    const datos = new FormData(formulario)
 
-  const datos = new FormData(event.currentTarget);
-  const formulario = event.currentTarget;
+    // Iniciar sesión.
+    if (modo === 'login') {
+      try {
+        setMensaje('Iniciando sesión...')
 
- if (modo === 'login') {
-  try {
-    setMensaje('Iniciando sesión...');
+        const respuesta = await fetch(`${API_URL}/api/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: datos.get('uname'),
+            password: datos.get('psw')
+          })
+        })
 
-    const respuesta = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: datos.get('uname'),
-        password: datos.get('psw')
-      })
-    });
+        const resultado = await respuesta.json()
 
-      const texto = await respuesta.text();
-      console.log('Respuesta del servidor:', texto);
-      const resultado = JSON.parse(texto);
-    if (!respuesta.ok) {
-      throw new Error(resultado.mensaje);
+        if (!respuesta.ok) {
+          throw new Error(
+            resultado.mensaje || 'No se pudo iniciar sesión.'
+          )
+        }
+
+        sessionStorage.setItem(
+          'savebebi_user_token',
+          resultado.token
+        )
+
+        sessionStorage.setItem(
+          'savebebi_user',
+          JSON.stringify(resultado.usuario)
+        )
+
+        setMensaje(resultado.mensaje || '¡Inicio de sesión correcto!')
+
+        formulario.reset()
+
+        window.location.href = '/Proyecto-SaveBebii/'
+
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error)
+        setMensaje(error.message || 'No se pudo conectar con el servidor.')
+      }
+
+      return
     }
 
-    sessionStorage.setItem('savebebi_user_token', resultado.token);
-    sessionStorage.setItem(
-      'savebebi_user',
-      JSON.stringify(resultado.usuario)
-    );
+    // Crear una cuenta.
+    const contrasena = datos.get('psw')
+    const confirmarContrasena = datos.get('confirmarPsw')
 
-    setMensaje(resultado.mensaje);
-
-    formulario.reset();
-    window.location.href = '/';
-    console.log('Redirigiendo a la página principal');
-
-  } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    setMensaje(error.message || 'No se pudo conectar con el servidor.');
-  }
-
-  return;
-}
-
-  const contrasena = datos.get('psw');
-  const confirmarContrasena = datos.get('confirmarPsw');
-
-  if (contrasena !== confirmarContrasena) {
-    setMensaje('Las contraseñas no coinciden.');
-    return;
-  }
-
-  try {
-    setMensaje('Creando tu cuenta...');
-
-    const respuesta = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        nombre: datos.get('nombre'),
-        email: datos.get('email'),
-        password: contrasena
-      })
-    });
-
-    const resultado = await respuesta.json();
-
-    if (!respuesta.ok) {
-      throw new Error(resultado.mensaje);
-      console.log('Inicio de sesión correcto');
-      console.log(resultado);
+    if (contrasena !== confirmarContrasena) {
+      setMensaje('Las contraseñas no coinciden.')
+      return
     }
 
-    setMensaje(resultado.mensaje);
-    formulario.reset();
-  } catch (error) {
-    console.error('Error en el registro:', error);
-    setMensaje(error.message || 'No se pudo conectar con el servidor.');
+    try {
+      setMensaje('Creando tu cuenta...')
+
+      const respuesta = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nombre: datos.get('nombre'),
+          email: datos.get('email'),
+          password: contrasena
+        })
+      })
+
+      const resultado = await respuesta.json()
+
+      if (!respuesta.ok) {
+        throw new Error(
+          resultado.mensaje || 'No se pudo crear la cuenta.'
+        )
+      }
+
+      setMensaje(resultado.mensaje || '¡Tu cuenta fue creada correctamente!')
+      formulario.reset()
+
+    } catch (error) {
+      console.error('Error en el registro:', error)
+      setMensaje(error.message || 'No se pudo conectar con el servidor.')
+    }
   }
-};
 
   return (
     <main>
@@ -159,17 +167,20 @@ const manejarEnvio = async (event) => {
             {/* Campos que aparecen solamente al registrarse. */}
             {modo === 'registro' && (
               <>
-              <div className="form-group">
-  <label htmlFor="uname">Usuario</label>
-  <input
-    type="email"
-    id="uname"
-    name="uname"
-    placeholder="Ingresa tu correo electrónico"
-    autoComplete="username"
-    required
-  />
-</div>
+                <div className="form-group">
+                  <label htmlFor="nombre">Nombre</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ingresa tu nombre"
+                    autoComplete="name"
+                    minLength={2}
+                    maxLength={70}
+                    required
+                  />
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="email">Correo electrónico</label>
                   <input
@@ -184,25 +195,20 @@ const manejarEnvio = async (event) => {
               </>
             )}
 
-            <div className="form-group">
+            {/* Correo para iniciar sesión. */}
+            {modo === 'login' && (
+              <div className="form-group">
                 <label htmlFor="uname">Correo electrónico</label>
-<input
-  type="email"
-  id="uname"
-  name="uname"
-  placeholder="Ingresa tu correo electrónico"
-  autoComplete="email"
-  required
-/>
-       <input
-                type="text"
-                id="uname"
-                name="uname"
-                placeholder="Ingresa tu usuario"
-                autoComplete="username"
-                required
-              />
-            </div>
+                <input
+                  type="email"
+                  id="uname"
+                  name="uname"
+                  placeholder="Ingresa tu correo electrónico"
+                  autoComplete="username"
+                  required
+                />
+              </div>
+            )}
 
             <div className="form-group">
               <label htmlFor="psw">Contraseña</label>
