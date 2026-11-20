@@ -38,6 +38,12 @@ function localReply(message) {
   if (/numero|celular|contacto|contactarme/.test(q))
     return 'Puedes contactarte y recibir la información que necesites al número: 311 6382548.'
 
+ if (/nombre|pagina|bebi|llama/.test(q))
+    return 'Woo, esta es un pregunta muy personal. La palabra Bebi en el nombre fue inspirado en un apodo que la creadora le tiene a alguien muy especial en su vida. La creadora de SaveBebi lo diseño en honor especial a esa persona.'
+
+  if (/creo|creador|diseñador|creadora/.test(q))
+    return ' SaveBebi lo diseño Yaira Sandrid, una joven de 16 años apasionada por la programacion.'
+
   return 'Quiero ayudarte. Por ahora puedo responder preguntas sobre productos, precios de referencia, pedidos, ayuda animal y recolección de tapitas.'
 }
 
