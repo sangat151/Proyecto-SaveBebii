@@ -51,7 +51,7 @@ function Footer() {
         </div>
 
         <div className="footer-admin-access">
-  <a href="/admin" aria-label="Acceso de administración">admin</a>
+<a href="/Proyecto-SaveBebii/#/admin" aria-label="Acceso de administración">admin</a>
 </div>
 
       </div>

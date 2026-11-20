@@ -121,8 +121,8 @@ function App() {
     )
   }
 
-  // Muestra el panel administrativo cuando se visita /admin.
-if (window.location.pathname === '/admin') {
+// Muestra el panel administrativo cuando se visita la ruta /admin.
+if (window.location.hash === '#/admin') {
   return <Admin />
 }
 
