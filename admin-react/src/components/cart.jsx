@@ -71,7 +71,10 @@ function Cart({
           ) : (
             items.map(item => (
               <div className="item" key={item.id}>
-                <img src={item.imagen} alt={item.nombre} />
+             <img
+              src={item.imagen}
+              alt={item.nombre}
+                />
 
                 <div className="item-info">
                   <div className="item-nombre">

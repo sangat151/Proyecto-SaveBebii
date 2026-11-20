@@ -17,22 +17,52 @@ import Admin from './components/Admin'
 
 function App() {
   const [pantalla, setPantalla] = useState('inicio')
-    // Muestra el panel administrativo cuando se visita /admin.
- 
+  const API_URL = 'https://savebebi-backend.onrender.com'
+
+  const obtenerImagen = (imagen) => {
+    if (!imagen) return ''
+
+    // Conserva las imágenes que ya están alojadas en Render.
+    if (imagen.startsWith(API_URL)) return imagen
+
+    // Convierte las direcciones antiguas de GitHub Pages.
+    if (imagen.includes('sangat151.github.io')) {
+      imagen = imagen.split('/Proyecto-SaveBebii/').pop()
+    }
+
+    // Elimina la carpeta del proyecto si aparece en la ruta.
+    const ruta = imagen
+      .replace(/^https?:\/\/[^/]+/, '')
+      .replace(/^\/+/, '')
+      .replace(/^Proyecto-SaveBebii\/?/, '')
+      .replace(/^public\//, '')
+
+    return `${API_URL}/public/${ruta}`
+  }
+
+  // Carga el carrito guardado y corrige las rutas de sus imágenes.
   const [carrito, setCarrito] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('savebebi_carrito')) || []
+      const guardado = JSON.parse(
+        localStorage.getItem('savebebi_carrito')
+      ) || []
+
+      return guardado.map(item => ({
+        ...item,
+        imagen: obtenerImagen(item.imagen)
+      }))
     } catch {
       return []
     }
   })
 
   const [carritoAbierto, setCarritoAbierto] = useState(false)
+
   // Hace que la página siempre comience desde arriba al recargar.
-   useEffect(() => {
-  window.history.scrollRestoration = 'manual'
-  window.scrollTo(0, 0)
-}, [])
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual'
+    window.scrollTo(0, 0)
+  }, [])
 
   // Guarda el carrito cuando cambia su contenido.
   useEffect(() => {
@@ -41,11 +71,12 @@ function App() {
 
   // Agrega un producto o aumenta su cantidad.
   const agregarProducto = (producto) => {
+    console.log('IMAGEN DEL PRODUCTO:', producto.image)
     const nuevoProducto = {
       id: producto._id,
       nombre: producto.name,
       precio: producto.price,
-      imagen: producto.image,
+      imagen: obtenerImagen(producto.image),
       cantidad: 1
     }
 
@@ -121,10 +152,10 @@ function App() {
     )
   }
 
-// Muestra el panel administrativo cuando se visita la ruta /admin.
-if (window.location.hash === '#/admin') {
-  return <Admin />
-}
+  // Muestra el panel administrativo.
+  if (window.location.hash === '#/admin') {
+    return <Admin />
+  }
 
   if (pantalla === 'login') {
     return <Login />
@@ -135,12 +166,9 @@ if (window.location.hash === '#/admin') {
       <Header onLogin={() => setPantalla('login')} />
 
       <main>
-
-       <Hero />
-
-       <Features />
-
-       <Nosotros />
+        <Hero />
+        <Features />
+        <Nosotros />
 
         <Products
           onAdd={agregarProducto}
@@ -152,11 +180,8 @@ if (window.location.hash === '#/admin') {
         />
 
         <Tapitas />
-
         <Impact />
-
         <Donation />
-
       </main>
 
       <Footer />
@@ -170,10 +195,8 @@ if (window.location.hash === '#/admin') {
         onClear={vaciarCarrito}
         onCheckout={finalizarPedido}
       />
-    
 
       <Chatbot />
-
     </>
   )
 }
