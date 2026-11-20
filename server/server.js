@@ -37,6 +37,7 @@ const Donation = require("./models/Donation");
 const Impact = require("./models/Impact");
 const User = require("./models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { randomUUID, timingSafeEqual } = require("crypto");
 
 // Express crea el servidor HTTP que entrega la web y recibe las peticiones de la API.
@@ -72,6 +73,144 @@ app.get("/api/health", (_req, res) => res.json({
   status: "ok",
   database: databaseReady() ? "connected" : "demo mode (MongoDB not connected)"
 }));
+
+
+ // REGISTRO DE USUARIOS
+app.post("/api/register", async (req, res) => {
+  try {
+    const { nombre, email, password } = req.body;
+
+    // Verificar que los campos estén completos
+    if (!nombre?.trim() || !email?.trim() || !password) {
+      return res.status(400).json({
+        mensaje: "Completa todos los campos."
+      });
+    }
+
+    // Validar la contraseña
+    if (password.length < 8) {
+      return res.status(400).json({
+        mensaje: "La contraseña debe tener al menos 8 caracteres."
+      });
+    }
+
+    // Verificar conexión con MongoDB
+    if (!databaseReady()) {
+      return res.status(503).json({
+        mensaje: "La base de datos no está disponible."
+      });
+    }
+
+    // Normalizar el correo
+    const correo = email.trim().toLowerCase();
+
+    // Comprobar si el correo ya está registrado
+    const usuarioExistente = await User.findOne({ email: correo });
+
+    if (usuarioExistente) {
+      return res.status(409).json({
+        mensaje: "Este correo ya está registrado."
+      });
+    }
+
+    // Encriptar la contraseña mediante bcrypt
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    // Guardar el usuario en MongoDB
+    const nuevoUsuario = await User.create({
+      nombre: nombre.trim(),
+      email: correo,
+      password: passwordHash
+    });
+
+    return res.status(201).json({
+      mensaje: "Cuenta creada correctamente.",
+      usuario: {
+        id: nuevoUsuario._id,
+        nombre: nuevoUsuario.nombre,
+        email: nuevoUsuario.email
+      }
+    });
+
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+
+    return res.status(500).json({
+      mensaje: "Ocurrió un error al crear la cuenta."
+    });
+  }
+});
+
+
+// INICIO DE SESIÓN DE USUARIOS
+app.post("/api/login", async (req, res) => {
+  try {
+    console.log("Se recibió una petición de inicio de sesión");
+    const { email, password } = req.body;
+
+    // Comprobar que los campos estén completos.
+    if (!email?.trim() || !password) {
+      return res.status(400).json({
+        mensaje: "Ingresa tu correo y contraseña."
+      });
+    }
+
+    // Comprobar conexión con MongoDB.
+    if (!databaseReady()) {
+      return res.status(503).json({
+        mensaje: "La base de datos no está disponible."
+      });
+    }
+
+    // Buscar al usuario por su correo.
+    const usuario = await User.findOne({
+      email: email.trim().toLowerCase()
+    });
+
+    if (!usuario) {
+      return res.status(401).json({
+        mensaje: "Correo o contraseña incorrectos."
+      });
+    }
+
+    // Comparar la contraseña con su hash guardado.
+    const contrasenaCorrecta = await bcrypt.compare(
+      password,
+      usuario.password
+    );
+
+    if (!contrasenaCorrecta) {
+      return res.status(401).json({
+        mensaje: "Correo o contraseña incorrectos."
+      });
+    }
+
+    // Crear el token de acceso.
+    const token = jwt.sign(
+      { id: usuario._id.toString() },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res.status(200).json({
+      mensaje: "¡Bienvenido a SaveBebi!",
+      token,
+      usuario: {
+        id: usuario._id,
+        nombre: usuario.nombre,
+        email: usuario.email
+      }
+    });
+
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+
+    return res.status(500).json({
+      mensaje: "Ocurrió un error al iniciar sesión."
+    });
+  }
+});
+
 
 app.get("/api/products", async (_req, res) => {
   try {
@@ -381,6 +520,8 @@ async function start() {
   if (process.env.MONGODB_URI) {
     try {
       await mongoose.connect(process.env.MONGODB_URI);
+      console.log("Base de datos utilizada:", mongoose.connection.name);
+      console.log("Colección de usuarios:", User.collection.name);
       console.log("MongoDB conectado.");
       const productCount = await Product.countDocuments();
       if (productCount === 0) {

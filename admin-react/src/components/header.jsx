@@ -2,39 +2,49 @@
 import { useState, useEffect } from 'react'
 
 function Header({ onLogin }) {
-  // Controla si el menú móvil está abierto o cerrado.
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const [cuentaAbierta, setCuentaAbierta] = useState(false)
 
-  // Agrega el efecto de sombra cuando el usuario baja por la página.
+  const [usuario, setUsuario] = useState(() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('savebebi_user')) || null
+    } catch {
+      return null
+    }
+  })
+
   useEffect(() => {
     const actualizarSombra = () => {
       const header = document.getElementById('header')
 
       if (header) {
-        if (window.scrollY > 20) {
-          header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.12)'
-        } else {
-          header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)'
-        }
+        header.style.boxShadow = window.scrollY > 20
+          ? '0 4px 30px rgba(0,0,0,0.12)'
+          : '0 2px 20px rgba(0,0,0,0.08)'
       }
     }
 
     window.addEventListener('scroll', actualizarSombra)
 
-    // Limpia el evento cuando el componente se desmonta.
     return () => {
       window.removeEventListener('scroll', actualizarSombra)
     }
   }, [])
 
-  // Cierra el menú después de seleccionar un enlace.
+  const cerrarSesion = () => {
+    sessionStorage.removeItem('savebebi_user')
+    sessionStorage.removeItem('savebebi_user_token')
+    setUsuario(null)
+    setCuentaAbierta(false)
+    cerrarMenu()
+  }
+
   const cerrarMenu = () => {
     setMenuAbierto(false)
   }
 
   return (
     <header className="header" id="header">
-
       <div className="container">
 
         <div className="logo">
@@ -78,22 +88,37 @@ function Header({ onLogin }) {
             Donar
           </a>
 
-        <button
-  type="button"
-  className="login-btn"
-  onClick={() => {
-    cerrarMenu()
-    onLogin()
-  }}
->
-  <i className="fas fa-sign-in-alt"></i>{' '}
-  Iniciar sesión
-</button>
+          <div className="account-container">
+            <button
+              type="button"
+              className="login-btn"
+              onClick={() => {
+                cerrarMenu()
+
+                if (usuario) {
+                  setCuentaAbierta(!cuentaAbierta)
+                } else {
+                  onLogin()
+                }
+              }}
+            >
+            <span style={{ fontSize: '20px' }}>♙</span>              {usuario ? 'Mi cuenta' : 'Iniciar sesión'}
+            </button>
+
+            {usuario && cuentaAbierta && (
+              <div className="account-menu">
+                <strong>{usuario.nombre}</strong>
+                <p>{usuario.email}</p>
+
+                <button type="button" onClick={cerrarSesion}>
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+          </div>
 
         </nav>
-
       </div>
-
     </header>
   )
 }

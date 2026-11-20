@@ -125,6 +125,96 @@ body {
   display: none !important;
 }
 
+
+/* Acceso a Mi cuenta */
+.account-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.account-container .login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.account-container .login-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(120, 80, 180, 0.2);
+}
+
+.account-container .login-btn i,
+.account-container .login-btn span {
+  font-size: 20px;
+}
+
+/* Menú desplegable de la cuenta */
+.account-menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  width: 245px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #eee7f8;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  z-index: 1100;
+  animation: aparecerCuenta 0.2s ease;
+}
+
+.account-menu strong {
+  display: block;
+  color: var(--primary-dark);
+  font-size: 1rem;
+  margin-bottom: 7px;
+}
+
+.account-menu p {
+  color: var(--text);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+  margin: 0 0 16px;
+}
+
+.account-menu button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #f2eafa;
+  color: var(--primary-dark);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.account-menu button:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+@keyframes aparecerCuenta {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 .menu-toggle {
   display: none;
   flex-direction: column;
