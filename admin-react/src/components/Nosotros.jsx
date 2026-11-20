@@ -23,7 +23,7 @@ function Nosotros() {
         <div className="nosotros-image">
           <div className="img">
             <img
-              src="/public/images/ayuda.png"
+           src="/Proyecto-SaveBebii/images/ayuda.png" 
               alt="Ayuda de SaveBebi a los animales"
             />
           </div>
