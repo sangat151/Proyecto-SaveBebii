@@ -23,7 +23,6 @@ const User = require("./models/User");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = path.join(__dirname, "..");
-const REACT_DIST = path.join(ROOT, "admin-react", "dist");
 
 // Configuración de imágenes de productos.
 const uploadFolder = path.join(
@@ -68,9 +67,8 @@ const upload = multer({
 // Permite leer solicitudes JSON.
 app.use(express.json({ limit: "20kb" }));
 
-// Publica los archivos de la página.
+// Publica las imágenes y archivos públicos de SaveBebi.
 app.use("/public", express.static(path.join(ROOT, "public")));
-app.use(express.static(REACT_DIST));
 
 // Comprueba si MongoDB está conectado.
 const databaseReady = () => mongoose.connection.readyState === 1;
@@ -1056,15 +1054,18 @@ async function start() {
 }
 
 
-// Permite que React funcione en las rutas de la página.
-app.get("*", (req, res) => {
-  if (req.path.startsWith("/api/")) {
-    return res.status(404).json({
-      mensaje: "Ruta no encontrada"
-    });
-  }
-
-  res.sendFile(path.join(REACT_DIST, "index.html"));
+// Página principal del backend.
+app.get("/", (_req, res) => {
+  res.json({
+    status: "ok",
+    mensaje: "Backend de SaveBebi funcionando."
+  });
 });
 
+// Responde cuando una ruta no existe.
+app.use((req, res) => {
+  res.status(404).json({
+    mensaje: "Ruta no encontrada."
+  });
+});
 start();
